@@ -1,0 +1,46 @@
+// list A: displays each item in the view as a bullet item in a list
+// IMPORTANT: remove line breaks before entering this list as a design document
+{
+   "countByDate": "function (head, req)    
+   {        
+        start({'headers': {'Content-type':'text/html'}});       
+        send('<html><body>');      
+        var row;      
+        while (row = getRow())      
+        {        
+            send('<li>' + row.value + ':' + row.key );
+        }      
+        send('</body></html>');   
+    }"
+}
+
+// list B: displays each item in the view as a data point in a Google Charts API line graph
+// IMPORTANT: remove line breaks before entering this list as a design document
+{
+   "countByDate": "function (head, req)    
+   {        
+        start({'headers': {'Content-type':'text/html'}});       
+        send('<html><head><script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>');
+        send('<script type=\"text/javascript\">');
+        send('google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});');
+        send('google.setOnLoadCallback(drawChart);');
+        send('function drawChart() {');
+        send('var data = google.visualization.arrayToDataTable(['); 
+        send('[\"Year\", \"Message Count\"]');
+        var row;      
+        while (row = getRow())      
+        {        
+            send(',[\"' + row.key + '\",' + row.value + ']' );
+        }      
+        send(']);');
+        send('var options = {title: \"Message Count by Year\",hAxis:{slantedText:true}};');
+        send('var chart = new google.visualization.LineChart(document.getElementById(\"chart_div\"));');
+        send('chart.draw(data, options);');
+        send('}</script></head><body>');
+        send('<div id=\"chart_div\" style=\"width: 900px; height: 500px;\"></div>');
+        send('</body></html>');   
+    }"
+}
+      
+        
+        
